@@ -232,10 +232,16 @@ class B2Connector:
                 for item in result['files']:
                     total_file_versions = total_file_versions + 1
                     key = item['fileName']
+                    fileinfo = {}
+                    fileinfo['md5'] = item['contentMd5']
+                    fileinfo['sha1'] = item['contentSha1']
+                    fileinfo['uploadtimestamp'] = item['uploadTimestamp']
+
                     if key in files_map:
-                        files_map[key] = files_map[key] + 1
+                        files_map[key][0] = files_map[key][0] + 1
                     else:
-                        files_map[key] = 1
+                        files_map[key] = [1]
+                    files_map[key].append(fileinfo)
             else:
                 print('Non 200 status code issued.')
                 sys.exit()
@@ -245,9 +251,15 @@ class B2Connector:
         files_with_versions_count = 0
         total_files = 0
         for key, value in files_map.items():
-            if(value > 1):
+            if(value[0] > 1):
                 files_with_versions_count = files_with_versions_count + 1
-                print(key + ' - ', value)
+                value.pop(0)
+                print('filename' + key)
+                for item in value:
+                    print('\tmd5: %s, sha1: %s, timestamp: %s'
+                          % (str(item['md5']),
+                             str(item['sha1']),
+                             str(item['uploadtimestamp'])))
             else:
                 total_files = total_files + 1
 
