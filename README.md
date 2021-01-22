@@ -1,7 +1,9 @@
 # Count Versions
-This script spiders through an S3 or S3 compatible bucket looking for
+This script spiders through a B2 bucket looking for
  versions of a objects. For any object that has multiple versions, it spits
- out the name of the object and the number of objects found.
+ out the name of the object and the number of objects found. It also returns
+  the total number of files and the total number of file versions that are
+   found in the bucket.
   
 ## Pre-requisites
 This scripts requires: 
@@ -17,25 +19,14 @@ pip install requests
 ```
 
 ## Config
-Configuration is stored in two places. 
+Configuration is stored in config.yaml.
 
-config.yaml, which needs to be in the working directory.
 ```yaml
-awsprofile: 'b2'
-bucket    : ''
-host      : 's3.us-west-001.backblazeb2.com'
-region    : 'us-west-001'
+bucketName : 'homelab-findingnilay-veeam'
+keyid      : '[add keyId here]'
+appkey     : '[add appkey here]'
+apiVersion : '/b2api/v2/'
 ```
-
-AWS CLI credentials file. It needs be found in ~/.aws/credentials. The
- `awsprofile` found in config.yaml needs to match a profile in the
-  credentials file. For example:
-  
-```ini
-[b2]
-aws_access_key_id = 001**************
-aws_secret_access_key = K00*************
-``` 
 
 ## Running the script
 ```bash
