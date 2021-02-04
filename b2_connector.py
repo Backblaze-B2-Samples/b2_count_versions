@@ -247,18 +247,18 @@ class B2Connector:
                 sys.exit()
 
         # Output all the files with > 1 versions.
-        print('Files where more than one version exists: (filename - count)')
+        print('Files where more than one version exists: ')
+        print('\tmd5, uploadtimestamp for each object')
         files_with_versions_count = 0
         total_files = 0
         for key, value in files_map.items():
             if(value[0] > 1):
                 files_with_versions_count = files_with_versions_count + 1
                 value.pop(0)
-                print('filename' + key)
+                print('filename: ' + key)
                 for item in value:
-                    print('\tmd5: %s, sha1: %s, timestamp: %s'
+                    print('\tmd5: %s, upload timestamp: %s'
                           % (str(item['md5']),
-                             str(item['sha1']),
                              str(item['uploadtimestamp'])))
             else:
                 total_files = total_files + 1
