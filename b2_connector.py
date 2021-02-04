@@ -73,7 +73,6 @@ class B2Connector:
         self.accountId = ''
 
         self.authB2()
-        self.bucket_id = self.getBucketIdFromName(self.bucket_name)
 
     def authB2(self):
         '''
@@ -105,6 +104,20 @@ class B2Connector:
         self.authToken = result['authorizationToken']
         self.downloadUrl = result['downloadUrl']
         self.accountId = result['accountId']
+
+        # if the application key is bound to only one bucket, the bucketId
+        # is actually in the result. In this case, just use the bucketId if
+        # it matches the name in config.yaml. If not, error out.
+
+        if result['allowed']['bucketId']:
+            if result['allowed']['bucketName'] == self.bucket_name:
+                self.bucket_id = result['allowed']['bucketId']
+            else:
+                print('Bucket authorized in key does not match config.yaml. '
+                      'Exiting.')
+                sys.exit()
+        else:
+            self.bucket_id = self.getBucketIdFromName(self.bucket_name)
 
     def getBucketIdFromName(self, bucket_name):
         '''
