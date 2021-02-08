@@ -280,6 +280,7 @@ class B2Connector:
                     fileinfo['md5'] = item['contentMd5']
                     fileinfo['sha1'] = item['contentSha1']
                     fileinfo['uploadtimestamp'] = item['uploadTimestamp']
+                    fileinfo['fileId'] = item['fileId']
 
                     if key in files_map:
                         files_map[key][0] = files_map[key][0] + 1
@@ -292,7 +293,7 @@ class B2Connector:
 
         # Output all the files with > 1 versions.
         print('Files where more than one version exists: ')
-        print('\tmd5, uploadtimestamp for each object')
+        print('\tmd5, uploadtimestamp, fileId for each object')
         files_with_versions_count = 0
         total_files = 0
         for key, value in files_map.items():
@@ -301,8 +302,9 @@ class B2Connector:
                 value.pop(0)
                 print('filename: ' + key)
                 for item in value:
-                    print('\tmd5: %s, upload timestamp: %s'
+                    print('\tmd5: %s, fileId: %s, upload timestamp: %s'
                           % (str(item['md5']),
+                             str(item['fileId']),
                              str(item['uploadtimestamp'])))
             else:
                 total_files = total_files + 1
