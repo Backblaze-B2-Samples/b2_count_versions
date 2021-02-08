@@ -301,6 +301,21 @@ class B2Connector:
                 files_with_versions_count = files_with_versions_count + 1
                 value.pop(0)
                 print('filename: ' + key)
+
+                # If there are two file versions, spit out the delta in
+                # upload timestamps, in seconds to make it easy to compare.
+
+                if (len(value) == 2):
+                    diff_ms = value[0]['uploadtimestamp'] - value[1]['uploadtimestamp']
+
+                    if (value[0]['md5'] == value[1]['md5']):
+                        md5match = 'md5 match'
+                    else:
+                        md5match = 'md5 does not match'
+
+                    print('Two versions, %s, uploaded %s seconds apart' %
+                    (md5match, int(diff_ms)/1000))
+
                 for item in value:
                     print('\tmd5: %s, fileId: %s, upload timestamp: %s'
                           % (str(item['md5']),
